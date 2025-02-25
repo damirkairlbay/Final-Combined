@@ -1,0 +1,99 @@
+<%- include('partials/header', {title: 'Blogs'}) %>
+
+<div class="main-content">
+    <div class="blogs-container">
+        <div class="card blog-form-card">
+            <h1 class="text-center">Create New Blog</h1>
+            <form action="/blogs/create" method="POST" class="blog-form">
+                <div class="form-group">
+                    <label for="title">Title:</label>
+                    <input type="text" id="title" name="title" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="author">Author:</label>
+                    <input type="text" id="author" name="author" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="body">Content:</label>
+                    <textarea id="body" name="body" class="form-control" rows="5" required></textarea>
+                </div>
+                <div class="form-group text-center">
+                    <button type="submit" class="btn btn-primary">Create Blog</button>
+                </div>
+            </form>
+        </div>
+
+        <div class="blogs-list">
+            <h2 class="text-center">Recent Blogs</h2>
+            <div class="blog-grid">
+                <% blogs.forEach(blog => { %>
+                    <div class="blog-card">
+                        <h3 class="blog-title"><%= blog.title %></h3>
+                        <div class="blog-meta">
+                            <span class="blog-author">By <%= blog.author %></span>
+                            <span class="blog-date"><%= new Date(blog.createdAt).toLocaleDateString() %></span>
+                        </div>
+                        <p class="blog-excerpt"><%= blog.body.substring(0, 150) %>...</p>
+                        <div class="blog-actions">
+                            <button class="btn btn-primary" onclick="openEditModal('<%= blog._id %>', '<%= blog.title %>', '<%= blog.author %>', `<%= blog.body %>`)">Edit</button>
+                            <form action="/blogs/delete/<%= blog._id %>" method="POST" class="delete-form">
+                                <button type="submit" class="btn btn-danger">Delete</button>
+                            </form>
+                        </div>
+                    </div>
+                <% }) %>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Blog Modal -->
+<div id="editBlogModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Edit Blog</h2>
+        <form id="editBlogForm" method="POST">
+            <div class="form-group">
+                <label for="editTitle">Title:</label>
+                <input type="text" id="editTitle" name="title" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="editAuthor">Author:</label>
+                <input type="text" id="editAuthor" name="author" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="editBody">Content:</label>
+                <textarea id="editBody" name="body" class="form-control" rows="5" required></textarea>
+            </div>
+            <div class="form-group text-center">
+                <button type="submit" class="btn btn-primary">Save Changes</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    const modal = document.getElementById('editBlogModal');
+    const span = document.getElementsByClassName('close')[0];
+    const editForm = document.getElementById('editBlogForm');
+
+    function openEditModal(id, title, author, body) {
+        modal.style.display = 'block';
+        document.getElementById('editTitle').value = title;
+        document.getElementById('editAuthor').value = author;
+        document.getElementById('editBody').value = body;
+        editForm.action = `/blogs/update/${id}`;
+    }
+
+    span.onclick = function() {
+        modal.style.display = 'none';
+    }
+
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = 'none';
+        }
+    }
+</script>
+
+<%- include('partials/footer') %>

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/styles.css">
+    <title>Combined Project</title>
+</head>
+<body>
+<%- include('partials/header') %>
+
+<div class="main-content">
+    <div class="dashboard">
+        <div class="projects-grid">
+            <div class="project-card">
+                <div class="project-card-content">
+                    <div>
+                        <div class="project-icon">
+                            <i class="fas fa-barcode"></i>
+                        </div>
+                        <h3>QR Code Generator</h3>
+                        <p>Transform any text or URL into a QR code instantly. Share information seamlessly with our intuitive generator.</p>
+                    </div>
+                    <a href="/qr" class="btn btn-primary">Generate QR Code →</a>
+                </div>
+            </div>
+
+            <div class="project-card">
+                <div class="project-card-content">
+                    <div>
+                        <div class="project-icon">
+                            <i class="fas fa-envelope-open-text"></i>
+                        </div>
+                        <h3>Email Service</h3>
+                        <p>Send beautiful, responsive emails with our streamlined service. Perfect for newsletters and personal messages.</p>
+                    </div>
+                    <a href="/email" class="btn btn-primary">Compose Email →</a>
+                </div>
+            </div>
+
+            <div class="project-card">
+                <div class="project-card-content">
+                    <div>
+                        <div class="project-icon">
+                            <i class="fas fa-dumbbell"></i>
+                        </div>
+                        <h3>BMI Calculator</h3>
+                        <p>Get personalized health insights with our advanced BMI calculator. Track your progress with precision.</p>
+                    </div>
+                    <a href="/bmi" class="btn btn-primary">Calculate Now →</a>
+                </div>
+            </div>
+
+            <div class="project-card">
+                <div class="project-card-content">
+                    <div>
+                        <div class="project-icon">
+                            <i class="fas fa-temperature-high"></i>
+                        </div>
+                        <h3>Weather Forecast</h3>
+                        <p>Stay ahead with accurate weather forecasts. Real-time updates and detailed conditions for any location.</p>
+                    </div>
+                    <a href="/weather" class="btn btn-primary">Check Weather →</a>
+                </div>
+            </div>
+
+            <div class="project-card">
+                <div class="project-card-content">
+                    <div>
+                        <div class="project-icon">
+                            <i class="fas fa-newspaper"></i>
+                        </div>
+                        <h3>Blog Platform</h3>
+                        <p>Share your stories with the world. Our minimalist blog platform puts your content in the spotlight.</p>
+                    </div>
+                    <a href="/blogs" class="btn btn-primary">Start Writing →</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include('partials/footer') %>
+</body>
+</html>

@@ -1,0 +1,137 @@
+<%- include('partials/header', {title: 'Weather Forecast'}) %>
+
+<div class="weather-page">
+    <div class="rick-morty-bg">
+        <div class="portal"></div>
+        <div class="rick"></div>
+        <div class="morty"></div>
+    </div>
+
+    <div class="main-content">
+        <div class="weather-container">
+            <div class="card search-card">
+                <h1 class="text-center">Weather Forecast</h1>
+                
+                <% if (typeof error !== 'undefined' && error) { %>
+                    <div class="alert alert-danger">
+                        <i class="fas fa-exclamation-circle"></i>
+                        <%= error %>
+                    </div>
+                <% } %>
+
+                <form action="/weather/getWeather" method="POST" class="weather-form">
+                    <div class="form-group">
+                        <label for="city">City:</label>
+                        <input type="text" 
+                               id="city" 
+                               name="city" 
+                               class="form-control" 
+                               required
+                               value="<%= typeof city !== 'undefined' ? city : '' %>"
+                               placeholder="Enter city name">
+                    </div>
+                    <div class="form-group text-center">
+                        <button type="submit" class="btn">
+                            <i class="fas fa-cloud-sun"></i>
+                            Get Weather
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <% if (typeof weather !== 'undefined' && weather) { %>
+                <div class="weather-results">
+                    <!-- Current Weather -->
+                    <div class="current-weather">
+                        <h2 class="text-center">Current Weather in <%= city %>, <%= weather.country %></h2>
+                        <div class="weather-main">
+                            <div class="weather-icon">
+                                <img src="https://openweathermap.org/img/wn/<%= weather.icon %>@2x.png" 
+                                     alt="<%= weather.description %>">
+                            </div>
+                            <div class="temperature">
+                                <span class="temp-value"><%= Math.round(weather.temperature) %>°C</span>
+                                <span class="temp-description"><%= weather.description %></span>
+                            </div>
+                        </div>
+                        <div class="weather-details">
+                            <div class="detail-item">
+                                <span class="label">Feels Like</span>
+                                <span class="value"><%= Math.round(weather.feels_like) %>°C</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="label">Humidity</span>
+                                <span class="value"><%= weather.humidity %>%</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="label">Wind Speed</span>
+                                <span class="value"><%= weather.wind_speed %> m/s</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="label">Pressure</span>
+                                <span class="value"><%= weather.pressure %> hPa</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Map -->
+                    <% if (typeof mapUrl !== 'undefined' && mapUrl) { %>
+                        <div class="map-card">
+                            <h2 class="text-center">Location Map</h2>
+                            <div class="map-container">
+                                <img src="<%= mapUrl %>" alt="Map of <%= city %>" class="weather-map">
+                            </div>
+                        </div>
+                    <% } %>
+
+                    <!-- City Information -->
+                    <% if (typeof geoInfo !== 'undefined' && geoInfo) { %>
+                        <div class="geo-info-card">
+                            <h2 class="text-center">City Information</h2>
+                            <div class="geo-info-details">
+                                <div class="detail-item">
+                                    <span class="label">Population</span>
+                                    <span class="value"><%= geoInfo.population.toLocaleString() %></span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="label">Region</span>
+                                    <span class="value"><%= geoInfo.region %></span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="label">Timezone</span>
+                                    <span class="value"><%= geoInfo.timezone %></span>
+                                </div>
+                            </div>
+                        </div>
+                    <% } %>
+
+                    <!-- Weather News -->
+                    <% if (typeof news !== 'undefined' && news.length > 0) { %>
+                        <div class="news-card">
+                            <h2 class="text-center">Weather News</h2>
+                            <div class="news-grid">
+                                <% news.forEach(article => { %>
+                                    <div class="news-item">
+                                        <% if (article.urlToImage) { %>
+                                            <img src="<%= article.urlToImage %>" alt="<%= article.title %>" class="news-image">
+                                        <% } %>
+                                        <div class="news-content">
+                                            <h3 class="news-title"><%= article.title %></h3>
+                                            <p class="news-description"><%= article.description %></p>
+                                            <a href="<%= article.url %>" target="_blank" class="btn">
+                                                <i class="fas fa-external-link-alt"></i>
+                                                Read More
+                                            </a>
+                                        </div>
+                                    </div>
+                                <% }); %>
+                            </div>
+                        </div>
+                    <% } %>
+                </div>
+            <% } %>
+        </div>
+    </div>
+</div>
+
+<%- include('partials/footer') %>

@@ -1,0 +1,93 @@
+<%- include('partials/header', {title: 'QR Code Generator'}) %>
+
+<div class="main-content">
+    <div class="card qr-card">
+        <div class="card-header">
+            <h1 class="text-center">
+                <i class="fas fa-qrcode"></i>
+                QR Code Generator
+            </h1>
+            <p class="text-center text-muted">Generate QR codes for text, URLs, or contact information</p>
+        </div>
+        
+        <% if (error) { %>
+            <div class="alert alert-danger">
+                <i class="fas fa-exclamation-circle"></i>
+                <%= error %>
+            </div>
+        <% } %>
+
+        <form action="/qr/generate" method="POST" class="qr-form">
+            <div class="form-group">
+                <label for="text">
+                    <i class="fas fa-keyboard"></i>
+                    Enter Text or URL:
+                </label>
+                <input type="text" 
+                       id="text" 
+                       name="text" 
+                       class="form-control" 
+                       placeholder="Enter text, URL, or contact information"
+                       required
+                       autofocus>
+                <small class="form-text text-muted">
+                    <i class="fas fa-info-circle"></i>
+                    The QR code will be generated instantly when you submit
+                </small>
+            </div>
+            <div class="form-group text-center">
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-magic"></i>
+                    Generate QR Code
+                </button>
+            </div>
+        </form>
+
+        <% if (qrImage) { %>
+            <div class="qr-result">
+                <img src="<%= qrImage %>" alt="Generated QR Code" class="qr-image">
+                <div class="qr-actions">
+                    <a href="<%= qrImage %>" download="qrcode.png" class="btn btn-primary">
+                        <i class="fas fa-download"></i>
+                        Download QR Code
+                    </a>
+                    <button onclick="shareQRCode()" class="btn btn-secondary">
+                        <i class="fas fa-share-alt"></i>
+                        Share
+                    </button>
+                </div>
+            </div>
+        <% } %>
+    </div>
+</div>
+
+<script>
+async function shareQRCode() {
+    const qrImage = document.querySelector('.qr-image');
+    if (!qrImage) return;
+
+    try {
+        const response = await fetch(qrImage.src);
+        const blob = await response.blob();
+        const file = new File([blob], 'qrcode.png', { type: 'image/png' });
+
+        if (navigator.share) {
+            await navigator.share({
+                title: 'QR Code',
+                text: 'Check out this QR code I generated!',
+                files: [file]
+            });
+        } else {
+            // Fallback for browsers that don't support Web Share API
+            const link = document.createElement('a');
+            link.href = qrImage.src;
+            link.download = 'qrcode.png';
+            link.click();
+        }
+    } catch (error) {
+        console.error('Error sharing QR code:', error);
+    }
+}
+</script>
+
+<%- include('partials/footer') %>

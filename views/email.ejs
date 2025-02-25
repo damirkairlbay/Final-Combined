@@ -1,0 +1,32 @@
+<%- include('partials/header', {title: 'Send Email'}) %>
+
+<div class="main-content">
+    <div class="card email-card">
+        <h1 class="text-center">Send Email</h1>
+        <form action="/email/send" method="POST" class="email-form">
+            <div class="form-group">
+                <label for="to">To:</label>
+                <input type="email" id="to" name="to" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="subject">Subject:</label>
+                <input type="text" id="subject" name="subject" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="text">Message:</label>
+                <textarea id="text" name="text" class="form-control" rows="6" required></textarea>
+            </div>
+            <div class="form-group text-center">
+                <button type="submit" class="btn btn-primary">Send Email</button>
+            </div>
+        </form>
+        
+        <% if (typeof message !== 'undefined') { %>
+            <div class="alert alert-success">
+                <%= message %>
+            </div>
+        <% } %>
+    </div>
+</div>
+
+<%- include('partials/footer') %>
